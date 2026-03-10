@@ -4,58 +4,487 @@
   <meta charset="utf-8">
   <title>{{ station_name }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
-    body { background:#050510; color:#fff; font-family:system-ui, sans-serif; margin:0; }
-    header { padding:2rem; text-align:center; background:radial-gradient(circle at top, #3b82f6, #050510); }
-    main { max-width:1000px; margin:2rem auto; padding:0 1rem 3rem; }
-    .player { background:#111827; padding:1.5rem; border-radius:1rem; display:flex; gap:1.5rem; align-items:center; box-shadow:0 20px 40px rgba(0,0,0,0.4); }
-    .player-info { flex:1; }
-    .art-wrap { width:120px; height:120px; border-radius:0.75rem; overflow:hidden; background:#020617; display:flex; align-items:center; justify-content:center; }
-    .art-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease; }
-    .art-wrap img.playing { transform:scale(1.05); }
-    audio { width:100%; margin-top:1rem; }
-    .badge { display:inline-flex; align-items:center; gap:0.5rem; padding:0.25rem 0.75rem; border-radius:999px; background:#1f2937; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.08em; color:#9ca3af; }
-    .badge-dot { width:8px; height:8px; border-radius:999px; background:#ef4444; box-shadow:0 0 10px rgba(239,68,68,0.8); animation:pulse 1.5s infinite; }
-    @keyframes pulse {
-      0% { transform:scale(1); opacity:1; }
-      50% { transform:scale(1.4); opacity:0.4; }
-      100% { transform:scale(1); opacity:1; }
+    body {
+      background:#050510;
+      color:#fff;
+      font-family:system-ui, sans-serif;
+      margin:0;
+      transition: background 0.3s ease, color 0.3s ease;
     }
+
+    /* --- NEW HYBRID NEON HEADER --- */
+    .neon-header {
+      padding: 3rem 1rem 4rem;
+      text-align: center;
+      background:
+        radial-gradient(circle at center, rgba(0,255,102,0.15), transparent 60%),
+        linear-gradient(to bottom, #000a00, #050510);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto 1rem;
+    }
+
+    @media (min-width: 800px) {
+      .neon-header::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(0,255,102,0.03) 0px,
+          rgba(0,255,102,0.03) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+        pointer-events: none;
+        opacity: 0.15;
+      }
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(0,255,102,0.1);
+      border: 1px solid #00ff66;
+      color: #00ff66;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(0,255,102,0.3);
+    }
+
+    .live-badge .live-dot {
+      width: 10px;
+      height: 10px;
+      background: #00ff66;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00ff66;
+      animation: pulse 1.5s infinite;
+    }
+
+    .dark-toggle {
+      background: rgba(0,255,102,0.1);
+      border: 1px solid #00ff66;
+      color: #00ff66;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 0 10px rgba(0,255,102,0.3);
+      transition: 0.2s ease;
+    }
+
+    .dark-toggle:hover {
+      background: rgba(0,255,102,0.2);
+    }
+
+    .neon-logo {
+      font-size: 3rem;
+      margin: 0.5rem 0;
+      color: #ffffff;
+      text-shadow:
+        0 0 8px #ffffff,
+        0 0 16px #00ff66,
+        0 0 32px rgba(0,255,102,0.4);
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+
+    .tagline {
+      margin-top: 0.5rem;
+      color: #b7ffcf;
+      font-size: 1.1rem;
+      opacity: 0.85;
+    }
+
+    /* --- NAVIGATION BAR --- */
+    .neon-nav {
+      background: #000a00;
+      border-bottom: 1px solid #003300;
+      padding: 0.8rem 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 9000;
+    }
+
+    .neon-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .neon-nav a {
+      color: #00ff66;
+      text-decoration: none;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      transition: 0.2s ease;
+    }
+
+    .neon-nav a:hover {
+      text-shadow: 0 0 10px #00ff66;
+    }
+
+    .nav-toggle {
+      display: none;
+      background: rgba(0,255,102,0.1);
+      border: 1px solid #00ff66;
+      color: #00ff66;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: auto;
+    }
+
+    @media (max-width: 700px) {
+      .neon-nav ul {
+        display: none;
+        flex-direction: column;
+        background: #000a00;
+        width: 100%;
+        padding: 1rem 0;
+        border-top: 1px solid #003300;
+      }
+
+      .neon-nav ul.open {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+    }
+
+    /* --- HERO POLISH --- */
+    .hero-polish {
+      position: relative;
+      height: 120px;
+      margin-top: -40px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .signal-lines {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 200%;
+      height: 100%;
+      transform: translateX(-50%);
+      background: repeating-linear-gradient(
+        to right,
+        rgba(0,255,102,0.05) 0px,
+        rgba(0,255,102,0.05) 2px,
+        transparent 4px
+      );
+      animation: signalMove 6s linear infinite;
+      opacity: 0.25;
+    }
+
+    @keyframes signalMove {
+      from { transform: translateX(-50%) translateY(0); }
+      to { transform: translateX(-50%) translateY(-20px); }
+    }
+
+    .hero-polish::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: linear-gradient(to bottom, rgba(0,255,102,0.1), transparent);
+      opacity: 0.4;
+    }
+
+    /* --- MAIN CONTENT --- */
+    main {
+      max-width:1000px;
+      margin:2rem auto;
+      padding:0 1rem 3rem;
+    }
+
+    .player {
+      background:#111827;
+      padding:1.5rem;
+      border-radius:1rem;
+      display:flex;
+      gap:1.5rem;
+      align-items:center;
+      box-shadow:0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .player-info { flex:1; }
+
+    .art-wrap {
+      width:120px;
+      height:120px;
+      border-radius:0.75rem;
+      overflow:hidden;
+      background:#020617;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .art-wrap img {
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:transform 0.5s ease;
+    }
+
+    .art-wrap img.playing { transform:scale(1.05); }
+
+    .badge {
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      padding:0.25rem 0.75rem;
+      border-radius:999px;
+      background:#1f2937;
+      font-size:0.8rem;
+      text-transform:uppercase;
+      letter-spacing:0.08em;
+      color:#9ca3af;
+    }
+
+    .badge-dot {
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#ef4444;
+      box-shadow:0 0 10px rgba(239,68,68,0.8);
+      animation:pulse 1.5s infinite;
+    }
+
     .listeners { font-size:0.85rem; color:#9ca3af; margin-top:0.25rem; }
     .np-title { font-size:1.4rem; font-weight:600; margin-top:0.5rem; }
     .np-artist { font-size:1rem; color:#d1d5db; }
+
     .recent { margin-top:1.5rem; font-size:0.9rem; color:#9ca3af; }
     .recent ul { list-style:none; padding:0; margin:0.5rem 0 0; }
     .recent li { padding:0.25rem 0; border-bottom:1px solid #111827; }
+
+    /* --- LISTEN LIVE BUTTON --- */
+    .listen-live-container {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .listen-live-btn {
+      background: rgba(0,255,102,0.1);
+      border: 1px solid #00ff66;
+      color: #00ff66;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 0 12px rgba(0,255,102,0.3);
+      transition: 0.2s ease;
+    }
+
+    .listen-live-btn:hover {
+      background: rgba(0,255,102,0.2);
+      box-shadow: 0 0 18px rgba(0,255,102,0.5);
+    }
+
+    /* --- SCHEDULE --- */
     .schedule { margin-top:2rem; }
-    .show { padding:1rem; background:#020617; border:1px solid #111827; margin-bottom:0.5rem; border-radius:0.75rem; display:flex; justify-content:space-between; align-items:center; }
-    .show.current { border-color:#3b82f6; background:linear-gradient(90deg, rgba(59,130,246,0.15), #020617); }
+    .show {
+      padding:1rem;
+      background:#020617;
+      border:1px solid #111827;
+      margin-bottom:0.5rem;
+      border-radius:0.75rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .show.current {
+      border-color:#3b82f6;
+      background:linear-gradient(90deg, rgba(59,130,246,0.15), #020617);
+    }
+
     .show-time { font-size:0.85rem; color:#9ca3af; }
-    @media (max-width:700px) {
-      .player { flex-direction:column; align-items:flex-start; }
-      .art-wrap { width:100px; height:100px; }
-      .show { flex-direction:column; align-items:flex-start; }
+
+    /* --- FOOTER --- */
+    .site-footer {
+      background: #000a00;
+      padding: 2rem 1rem;
+      text-align: center;
+      margin-top: 4rem;
+      border-top: 1px solid #003300;
+    }
+
+    .footer-social a {
+      color: #00ff66;
+      font-size: 1.6rem;
+      margin: 0 0.5rem;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .footer-social a:hover {
+      text-shadow: 0 0 10px #00ff66;
+    }
+
+    .footer-copy {
+      margin-top: 1rem;
+      color: #88ffbb;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    /* --- STICKY PLAYER BAR --- */
+    .sticky-player {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #001100;
+      border-top: 1px solid #003300;
+      padding: 0.75rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 9999;
+      animation: slideUp 0.6s ease-out forwards;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .sticky-logo {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 0 8px #ffffff, 0 0 16px #00ff66;
+      margin-bottom: 0.4rem;
+      letter-spacing: 1px;
+    }
+
+    .sticky-controls {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #ccffcc;
+      font-size: 0.9rem;
+    }
+
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      width: 70%;
+    }
+
+    .marquee span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 12s linear infinite;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-100%); }
+    }
+
+    /* --- DARK MODE --- */
+    body.dark {
+      background:#000000;
+      color:#e0ffe8;
+    }
+
+    body.dark .neon-header {
+      background:
+        radial-gradient(circle at center, rgba(0,255,102,0.25), transparent 60%),
+        linear-gradient(to bottom, #000000, #020202);
+    }
+
+    body.dark .sticky-player {
+      background:#000000;
+      border-top:1px solid #004400;
+    }
+
+    body.dark .listen-live-btn,
+    body.dark .play-btn,
+    body.dark .dark-toggle {
+      border-color:#00ff99;
+      color:#00ff99;
+      box-shadow:0 0 12px rgba(0,255,153,0.3);
+    }
+
+    body.dark .footer-social a {
+      color:#00ff99;
     }
   </style>
 </head>
 
 <body>
-<header>
-  <div class="badge">
-    <span class="badge-dot"></span>
-    <span>Live Internet Radio</span>
+
+<!-- ⭐ HEADER ⭐ -->
+<header class="neon-header">
+  <div class="header-top">
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      LIVE
+    </div>
+
+    <button class="dark-toggle" onclick="toggleDarkMode()">☾</button>
   </div>
-  <h1>{{ station_name }}</h1>
-  <p>{{ tagline }}</p>
+
+  <h1 class="neon-logo">SpitzFM</h1>
+  <p class="tagline">{{ tagline }}</p>
 </header>
+
+<!-- ⭐ NAVIGATION ⭐ -->
+<nav class="neon-nav">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="/shop">Shop</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+
+  <button class="nav-toggle" onclick="toggleNav()">☰</button>
+</nav>
+
+<!-- ⭐ HERO POLISH ⭐ -->
+<section class="hero-polish">
+  <div class="signal-lines"></div>
+</section>
 
 <main>
   <div id="root"></div>
 
-  <!-- AUDIO PLAYER OUTSIDE RAW BLOCK -->
-  <audio id="main-player" controls autoplay style="width:100%; margin-top:2rem;">
-    <source src="{{ stream_url }}" type="audio/mpeg">
-  </audio>
+  <!-- ⭐ LISTEN LIVE BUTTON ⭐ -->
+  <div class="listen-live-container">
+    <button class="listen-live-btn" onclick="togglePlay()">▶ Listen Live</button>
+  </div>
 </main>
 
 <!-- React via CDN -->
@@ -129,42 +558,4 @@ function RadioApp() {
           <div className="recent">
             <strong>Recently played</strong>
             <ul>
-              {recent.length === 0 && <li>Waiting for history…</li>}
-              {recent.map((track, idx) => (
-                <li key={idx}>
-                  {track.title}{track.artist ? " — " + track.artist : ""}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(React.createElement(RadioApp));
-</script>
-{% endraw %}
-
-<!-- Jinja schedule rendering -->
-<section class="schedule" style="max-width:1000px; margin:2rem auto; padding:0 1rem;">
-  <h2>Today's Schedule</h2>
-
-  {% for show in schedule %}
-    <div class="show {% if current_show and show.name == current_show.name %}current{% endif %}">
-      <div>
-        <strong>{{ show.name }}</strong><br>
-        {{ show.description }}
-      </div>
-      <div class="show-time">
-        {{ show.start.strftime("%H:%M") }}–{{ show.end.strftime("%H:%M") }}
-      </div>
-    </div>
-  {% endfor %}
-
-</section>
-
-</body>
-</html>
+              {recent.length === 0 && <li>Waiting for history…</
