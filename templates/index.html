@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ station_name }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { background:#050510; color:#fff; font-family:system-ui, sans-serif; margin:0; }
+    header { padding:2rem; text-align:center; background:radial-gradient(circle at top, #3b82f6, #050510); }
+    main { max-width:1000px; margin:2rem auto; padding:0 1rem 3rem; }
+    .player { background:#111827; padding:1.5rem; border-radius:1rem; display:flex; gap:1.5rem; align-items:center; box-shadow:0 20px 40px rgba(0,0,0,0.4); }
+    .player-info { flex:1; }
+    .art-wrap { width:120px; height:120px; border-radius:0.75rem; overflow:hidden; background:#020617; display:flex; align-items:center; justify-content:center; }
+    .art-wrap img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s ease; }
+    .art-wrap img.playing { transform:scale(1.05); }
+    audio { width:100%; margin-top:1rem; }
+    .badge { display:inline-flex; align-items:center; gap:0.5rem; padding:0.25rem 0.75rem; border-radius:999px; background:#1f2937; font-size:0.8rem; text-transform:uppercase; letter-spacing:0.08em; color:#9ca3af; }
+    .badge-dot { width:8px; height:8px; border-radius:999px; background:#ef4444; box-shadow:0 0 10px rgba(239,68,68,0.8); animation:pulse 1.5s infinite; }
+    @keyframes pulse {
+      0% { transform:scale(1); opacity:1; }
+      50% { transform:scale(1.4); opacity:0.4; }
+      100% { transform:scale(1); opacity:1; }
+    }
+    .listeners { font-size:0.85rem; color:#9ca3af; margin-top:0.25rem; }
+    .np-title { font-size:1.4rem; font-weight:600; margin-top:0.5rem; }
+    .np-artist { font-size:1rem; color:#d1d5db; }
+    .recent { margin-top:1.5rem; font-size:0.9rem; color:#9ca3af; }
+    .recent ul { list-style:none; padding:0; margin:0.5rem 0 0; }
+    .recent li { padding:0.25rem 0; border-bottom:1px solid #111827; }
+    .schedule { margin-top:2rem; }
+    .show { padding:1rem; background:#020617; border:1px solid #111827; margin-bottom:0.5rem; border-radius:0.75rem; display:flex; justify-content:space-between; align-items:center; }
+    .show.current { border-color:#3b82f6; background:linear-gradient(90deg, rgba(59,130,246,0.15), #020617); }
+    .show-time { font-size:0.85rem; color:#9ca3af; }
+    @media (max-width:700px) {
+      .player { flex-direction:column; align-items:flex-start; }
+      .art-wrap { width:100px; height:100px; }
+      .show { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="badge">
+    <span class="badge-dot"></span>
+    <span>Live Internet Radio</span>
+  </div>
+  <h1>{{ station_name }}</h1>
+  <p>{{ tagline }}</p>
+</header>
+
+<main>
+  <div id="root"></div>
+
+  <!-- AUDIO PLAYER OUTSIDE RAW BLOCK -->
+  <audio id="main-player" controls autoplay style="width:100%; margin-top:2rem;">
+    <source src="{{ stream_url }}" type="audio/mpeg">
+  </audio>
+</main>
+
+<!-- React via CDN -->
+<script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+{% raw %}
+<script>
+const { useState, useEffect } = React;
+
+function RadioApp() {
+  const [nowPlaying, setNowPlaying] = useState({
+    title: "Loading...",
+    artist: "",
+    listeners: 0,
+    art_url: "",
+    is_live: false,
+  });
+
+  const [recent, setRecent] = useState([]);
+
+  function fetchNowPlaying() {
+    fetch("/api/nowplaying")
+      .then(r => r.json())
+      .then(data => {
+        setNowPlaying(prev => {
+          if (prev.title && (prev.title !== data.title || prev.artist !== data.artist)) {
+            setRecent(r => {
+              const updated = [{ title: prev.title, artist: prev.artist }, ...r];
+              return updated.slice(0, 5);
+            });
+          }
+          return data;
+        });
+      })
+      .catch(() => {});
+  }
+
+  useEffect(() => {
+    fetchNowPlaying();
+    const id = setInterval(fetchNowPlaying, 10000);
+    return () => clearInterval(id);
+  }, []);
+
+  const artClass = nowPlaying.art_url ? "playing" : "";
+
+  return (
+    <>
+      <section className="player">
+        <div className="art-wrap">
+          {nowPlaying.art_url ? (
+            <img src={nowPlaying.art_url} alt="Album art" className={artClass} />
+          ) : (
+            <span>🎵</span>
+          )}
+        </div>
+
+        <div className="player-info">
+          <div className="badge" style={{ marginBottom: "0.5rem" }}>
+            <span className="badge-dot" style={{
+              background: nowPlaying.is_live ? "#22c55e" : "#6b7280",
+              boxShadow: nowPlaying.is_live ? "0 0 10px rgba(34,197,94,0.8)" : "none"
+            }}></span>
+            <span>{nowPlaying.is_live ? "Live DJ On Air" : "AutoDJ"}</span>
+          </div>
+
+          <div className="listeners">Listeners: {nowPlaying.listeners}</div>
+          <div className="np-title fade-enter fade-enter-active">{nowPlaying.title}</div>
+          <div className="np-artist">{nowPlaying.artist}</div>
+
+          <div className="recent">
+            <strong>Recently played</strong>
+            <ul>
+              {recent.length === 0 && <li>Waiting for history…</li>}
+              {recent.map((track, idx) => (
+                <li key={idx}>
+                  {track.title}{track.artist ? " — " + track.artist : ""}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(React.createElement(RadioApp));
+</script>
+{% endraw %}
+
+<!-- Jinja schedule rendering -->
+<section class="schedule" style="max-width:1000px; margin:2rem auto; padding:0 1rem;">
+  <h2>Today's Schedule</h2>
+
+  {% for show in schedule %}
+    <div class="show {% if current_show and show.name == current_show.name %}current{% endif %}">
+      <div>
+        <strong>{{ show.name }}</strong><br>
+        {{ show.description }}
+      </div>
+      <div class="show-time">
+        {{ show.start.strftime("%H:%M") }}–{{ show.end.strftime("%H:%M") }}
+      </div>
+    </div>
+  {% endfor %}
+
+</section>
+
+</body>
+</html>
