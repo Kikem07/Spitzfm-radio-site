@@ -1,11 +1,25 @@
 <!doctype html>
-<html>
+<html> 
 <head>
+
   <meta charset="utf-8">
   <title>{{ station_name }}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/spitzfm.css') }}">
+
+
   <style>
+
+    .market-day-banner {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    color: #b7ffcf;
+    text-align: left;
+    padding-left: 0.2rem;
+    opacity: 0.9;
+}
+
     body {
       background:#050510;
       color:#fff;
@@ -444,6 +458,7 @@
   </style>
 </head>
 
+
 <body>
 
 <!-- ⭐ HEADER ⭐ -->
@@ -454,12 +469,24 @@
       LIVE
     </div>
 
+    <div class="market-day-banner">
+      {{ market_day }}
+    </div>
+
     <button class="dark-toggle" onclick="toggleDarkMode()">☾</button>
   </div>
 
   <h1 class="neon-logo">SpitzFM</h1>
   <p class="tagline">{{ tagline }}</p>
 </header>
+
+<!-- MARKET DAY TEXT -->
+<p class="market-day">{{ market_day }}</p>
+
+<!-- MARKET DAY ANIMATION -->
+<div class="market-animation-container">
+  <video id="market-animation" autoplay muted loop playsinline preload="none"></video>
+</div>
 
 <!-- ⭐ NAVIGATION ⭐ -->
 <nav class="neon-nav">
@@ -471,7 +498,11 @@
   </ul>
 
   <button class="nav-toggle" onclick="toggleNav()">☰</button>
+
+  <!-- ⭐ ADD DARK MODE BUTTON ⭐ -->
+  <button onclick="toggleDarkMode()" class="darkmode-btn">☀ / 🌙</button>
 </nav>
+
 
 <!-- ⭐ HERO POLISH ⭐ -->
 <section class="hero-polish">
@@ -484,6 +515,12 @@
   <!-- ⭐ LISTEN LIVE BUTTON ⭐ -->
   <div class="listen-live-container">
     <button class="listen-live-btn" onclick="togglePlay()">▶ Listen Live</button>
+  </div>
+
+  <div class="social-banner">
+    <a href="https://x.com/spitzfmradio" target="_blank" class="social-link x-link">X</a>
+    <a href="https://spitzfm.medium.com/" target="_blank" class="social-link medium-link">Medium</a>
+    <a class="social-link youtube-link disabled">YouTube</a>
   </div>
 </main>
 
@@ -552,10 +589,83 @@ function RadioApp() {
           </div>
 
           <div className="listeners">Listeners: {nowPlaying.listeners}</div>
-          <div className="np-title fade-enter fade-enter-active">{nowPlaying.title}</div>
+          <div className="np-title">{nowPlaying.title}</div>
           <div className="np-artist">{nowPlaying.artist}</div>
 
           <div className="recent">
             <strong>Recently played</strong>
             <ul>
-              {recent.length === 0 && <li>Waiting for history…</
+              {recent.length === 0 && <li>Waiting for history…</li>}
+              {recent.map((track, idx) => (
+                <li key={idx}>
+                  {track.title}{track.artist ? " — " + track.artist : ""}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(React.createElement(RadioApp));
+</script>
+{% endraw %}
+
+<!-- ⭐ MARKET DAY + AUDIO ⭐ -->
+<script>
+  // MARKET DAY ANIMATION
+  const marketDay = "{{ market_day }}";
+  const videoMap = {
+    "Orie": "{{ url_for('static', filename='video/orie.mp4') }}",
+    "Afor": "{{ url_for('static', filename='video/afor.mp4') }}",
+    "Nkwo": "{{ url_for('static', filename='video/nkwo.mp4') }}",
+    "Eke": "{{ url_for('static', filename='video/eke.mp4') }}"
+  };
+
+  const anim = document.getElementById("market-animation");
+  if (anim && videoMap[marketDay]) {
+    anim.src = videoMap[marketDay];
+  }
+
+  // AUDIO PLAYER
+  const audio = new Audio("{{ stream_url }}");
+  audio.preload = "none";
+  audio.autoplay = false;
+  audio.controls = false;
+  audio.setAttribute("playsinline", "");
+  let isPlaying = false;
+
+  function togglePlay() {
+  if (!isPlaying) {
+    audio.play().catch(err => console.log("Audio play blocked:", err));
+    isPlaying = true;
+    document.getElementById("market-animation").classList.add("pulsing");
+  } else {
+    audio.pause();
+    isPlaying = false;
+    document.getElementById("market-animation").classList.remove("pulsing");
+  }
+  function toggleDarkMode() {
+  document.body.classList.toggle("light-mode");
+}
+
+function toggleDarkMode() {
+  document.body.classList.toggle("light-mode");
+}
+
+}
+
+</script>
+
+<footer class="site-footer">
+  <div class="footer-content">
+    <img src="/static/images/spitzfm-logo.png" alt="SpitzFM Logo" class="footer-logo">
+    <p class="footer-tagline">FULL WEBSITE COMING SOON</p>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,364 @@
+/* GLOBAL LAYOUT */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #050816 0, #02010a 40%, #000 100%);
+  color: #e5e7eb;
+  min-height: 100vh;
+}
+
+/* HEADER / LOGO */
+.listen-live-container {
+  display: flex;
+  justify-content: flex-start; /* was center */
+  margin: 1.5rem 0;
+}
+
+
+.neon-logo {
+  font-size: 2.8rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #67e8f9;
+  text-shadow:
+    0 0 8px rgba(34,211,238,0.9),
+    0 0 18px rgba(34,211,238,0.7);
+}
+
+.tagline {
+  margin-top: 0.4rem;
+  font-size: 0.95rem;
+  color: #9ca3af;
+}
+
+/* MARKET DAY TEXT */
+.market-day {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #facc15;
+}
+
+/* MARKET DAY ANIMATION */
+.market-animation-container {
+  margin: 1.5rem auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#market-animation {
+  max-width: 320px;
+  width: 80%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  filter: drop-shadow(0 0 14px rgba(56,189,248,0.7));
+}
+
+/* NAVIGATION */
+.neon-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem 1.25rem;
+}
+
+.neon-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.25rem;
+}
+
+.neon-nav a {
+  text-decoration: none;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #e5e7eb;
+  position: relative;
+}
+
+.neon-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.25rem;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #22c55e, #22d3ee);
+  transition: width 0.2s ease-out;
+}
+
+.neon-nav a:hover::after {
+  width: 100%;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid #4b5563;
+  color: #e5e7eb;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* HERO POLISH */
+.hero-polish {
+  height: 2px;
+  margin: 0 1.5rem 1.5rem;
+  background: linear-gradient(90deg, #22c55e, #22d3ee, #a855f7);
+  opacity: 0.6;
+}
+
+/* MAIN LAYOUT */
+main {
+  padding: 0 1.5rem 2rem;
+}
+
+/* LISTEN LIVE BUTTON */
+.listen-live-container {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.listen-live-btn {
+  background: radial-gradient(circle at top, #22c55e 0, #16a34a 40%, #14532d 100%);
+  color: #ecfdf5;
+  border: none;
+  padding: 0.75rem 1.75rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow:
+    0 0 10px rgba(34,197,94,0.7),
+    0 0 22px rgba(34,197,94,0.5);
+  transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+}
+
+.listen-live-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 14px rgba(34,197,94,0.9),
+    0 0 26px rgba(34,197,94,0.7);
+}
+
+/* SOCIAL LINKS */
+.social-banner {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.social-link {
+  text-decoration: none;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  color: #e5e7eb;
+}
+
+.social-link.disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* PLAYER SECTION */
+.player {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: radial-gradient(circle at top left, #111827 0, #020617 60%, #000 100%);
+  border: 1px solid rgba(55,65,81,0.8);
+  box-shadow:
+    0 0 18px rgba(15,23,42,0.9),
+    0 0 32px rgba(15,23,42,0.7);
+}
+
+.art-wrap {
+  width: 96px;
+  height: 96px;
+  border-radius: 16px;
+  background: #020617;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.art-wrap img.playing {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-info {
+  flex: 1;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(15,23,42,0.9);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.listeners {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+
+.np-title {
+  margin-top: 0.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.np-artist {
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+.recent {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+}
+
+.recent ul {
+  margin-top: 0.25rem;
+  list-style: none;
+}
+
+.recent li {
+  color: #9ca3af;
+  font-size: 0.8rem;
+}
+
+/* FOOTER */
+.site-footer {
+  border-top: 1px solid #111827;
+  padding: 1.25rem 1.5rem 1.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  text-align: center;
+}
+
+.footer-logo {
+  height: 40px;
+  margin-bottom: 0.5rem;
+}
+
+.footer-tagline {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .player {
+    flex-direction: column;
+  }
+
+  .neon-nav ul {
+    display: none; /* you can later wire this to nav-toggle */
+  }
+
+  .nav-toggle {
+    display: inline-block;
+  }
+}
+/* Center the market‑day animation */
+.market-animation-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;   /* horizontal centering */
+  align-items: center;        /* vertical centering (if needed) */
+  margin: 1.5rem auto;
+}
+
+#market-animation {
+  max-width: 320px;           /* adjust size if you want */
+  width: 80%;
+  height: auto;
+  display: block;
+}
+
+/* Pulse animation */
+@keyframes pulseGlow {
+  0%   { filter: drop-shadow(0 0 10px var(--market-glow)); }
+  50%  { filter: drop-shadow(0 0 22px var(--market-glow)); }
+  100% { filter: drop-shadow(0 0 10px var(--market-glow)); }
+}
+
+#market-animation.pulsing {
+  animation: pulseGlow 2s infinite ease-in-out;
+}
+
+
+/* Light mode */
+.light-mode {
+  background: #ffffff;
+  color: #111827;
+}
+
+.light-mode header,
+.light-mode .player,
+.light-mode .site-footer {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.light-mode .listen-live-btn {
+  background: #111827;
+  color: #ffffff;
+}
+
+/* Light mode toggle */
+.light-mode {
+  background: #ffffff;
+  color: #111827;
+}
+
+.light-mode header,
+.light-mode .player,
+.light-mode .site-footer {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.light-mode .listen-live-btn {
+  background: #111827;
+  color: #ffffff;
+}
