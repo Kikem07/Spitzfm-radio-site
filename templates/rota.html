@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- HERO -->
+<div class="rota-hero">
+    <div class="rota-overlay">
+        <h1>ROTA</h1>
+        <p>Daily Call Sheet — Market Day Colour System</p>
+    </div>
+</div>
+
+<section class="rota-section">
+
+
+    <div class="market-badge">
+    Today is: <span id="marketDay">{{ market_day }}</span>
+</div>
+
+    <div class="rota-grid">
+
+        <!-- TIME BLOCKS -->
+        {% set blocks = [
+            ("05:00–05:30", "Opening Prayer & Word"),
+            ("05:30–06:30", "News & Investment"),
+            ("06:30–07:00", "Adverts & Community Bulletin"),
+            ("07:00–09:00", "Hour of Fire & Worship"),
+            ("09:00–11:00", "Focus Instrumentals"),
+            ("11:00–12:00", "BBC‑style Talk Hour"),
+            ("12:00–13:00", "Lunch Throwback Classics"),
+            ("13:00–15:00", "Workday Instrumentals"),
+            ("15:00–16:00", "Learning & Ideas Hour"),
+            ("16:00–17:59", "Build‑Up Instrumentals"),
+            ("18:00–19:00", "Commercial & Partner Hour"),
+            ("19:00–20:00", "DJ Throwback & Stories"),
+            ("20:00–21:00", "Digital Voices / Podcasts"),
+            ("21:00–22:00", "Sponsored Show / Panel"),
+            ("22:00–23:00", "Round‑Up & Night Blessing")
+        ] %}
+
+        {% for time, title in blocks %}
+        <div class="rota-card">
+            <div class="rota-time">{{ time }}</div>
+            <div class="rota-title">{{ title }}</div>
+            <div class="rota-card" onclick="openBlock('{{ title }}', '{{ time }}')">
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+<div id="blockModal" class="block-modal">
+    <div class="block-modal-content">
+        <span class="close-modal" onclick="closeBlock()">&times;</span>
+        <h2 id="modalTitle"></h2>
+        <p id="modalTime"></p>
+        <p>More details coming soon…</p>
+    </div>
+</div>

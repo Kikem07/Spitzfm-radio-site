@@ -28,6 +28,9 @@ def get_market_day():
     return mapping[weekday]
 
 
+# -------------------------
+# HOMEPAGE
+# -------------------------
 @app.route("/")
 def index():
     return render_template(
@@ -40,6 +43,58 @@ def index():
     )
 
 
+# -------------------------
+# SHOP
+# -------------------------
+@app.route("/shop")
+def shop():
+    return render_template(
+        "shop.html",
+        tagline=TAGLINE,
+        market_day=get_market_day(),
+        stream_url=STREAM_URL,
+    )
+
+
+# -------------------------
+# SCHEDULE
+# -------------------------
+@app.route("/schedule")
+def schedule():
+    return render_template(
+        "schedule.html",
+        tagline=TAGLINE,
+        market_day=get_market_day(),
+        stream_url=STREAM_URL,
+    )
+
+
+# -------------------------
+# ADVERTISING
+# -------------------------
+@app.route("/advertising")
+def advertising():
+    return render_template("advertising.html")
+
+
+# -------------------------
+# ABOUT
+# -------------------------
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+# -------------------------
+# ROTA
+# -------------------------
+@app.route("/rota")
+def rota():
+    return render_template("rota.html")
+
+
+# -------------------------
+# RUN APP
+# -------------------------
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5002))

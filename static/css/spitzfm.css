@@ -328,16 +328,19 @@ main {
 
 
 /* Light mode */
+/* Light mode (soft grey instead of bright white) */
 .light-mode {
-  background: #ffffff;
+  background: #f3f4f6;
   color: #111827;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
 .light-mode header,
 .light-mode .player,
 .light-mode .site-footer {
-  background: #f3f4f6;
+  background: #ffffff;
   color: #111827;
+  border-color: #d1d5db;
 }
 
 .light-mode .listen-live-btn {
@@ -345,20 +348,33 @@ main {
   color: #ffffff;
 }
 
-/* Light mode toggle */
-.light-mode {
-  background: #ffffff;
-  color: #111827;
+.light-mode .neon-logo {
+  color: #0f172a;
+  text-shadow: none;
 }
 
-.light-mode header,
-.light-mode .player,
-.light-mode .site-footer {
-  background: #f3f4f6;
+.light-mode .darkmode-btn {
+  background: #e5e7eb;
   color: #111827;
+  border-color: #9ca3af;
 }
 
-.light-mode .listen-live-btn {
-  background: #111827;
-  color: #ffffff;
+.light-mode .darkmode-btn:hover {
+  background: #d1d5db;
+}
+
+
+/* Style the dark mode button */
+.darkmode-btn {
+  margin-top: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #4b5563;
+  background: rgba(255,255,255,0.1);
+  color: #e5e7eb;
+  cursor: pointer;
+}
+
+.darkmode-btn:hover {
+  background: rgba(255,255,255,0.2);
 }

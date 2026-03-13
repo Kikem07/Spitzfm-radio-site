@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SpitzFM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/spitzfm.css') }}">
+</head>
+
+<body>
+
+<header class="main-header">
+    <h1 class="logo">SPITZFM</h1>
+
+    <nav class="main-nav">
+        <a href="/">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="/about">About</a>
+        <a href="/schedule">Schedule</a>
+        <a href="/rota">Rota</a>
+        <a href="/advertising">Advertising</a>
+        <button onclick="openCart()" class="basket-btn">Basket</button>
+    </nav>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<!-- CART SIDEBAR -->
+<div id="cart-sidebar" class="cart-sidebar">
+    <button class="close-cart" onclick="closeCart()">×</button>
+    <h2>Your Basket</h2>
+    <div id="cart-items"></div>
+    <div class="cart-footer">
+        <p>Total: <span id="cart-total">£0.00</span></p>
+        <button class="checkout-btn">Checkout</button>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast" class="toast">Added to Basket</div>
+
+<script>
+function addToCart(id) {
+    let size = null;
+    const sizeSelect = document.getElementById("size");
+    if (sizeSelect) size = sizeSelect.value;
+
+    fetch("/cart/add", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({id: id, size: size})
+    })
+    .then(res => res.json())
+    .then(() => {
+        updateCartSidebar();
+        showToast();
+    });
+}
+
+function updateCartSidebar() {
+    fetch("/cart/get")
+        .then(res => res.json())
+        .then(cart => {
+            const container = document.getElementById("cart-items");
+            container.innerHTML = "";
+
+            let total = 0;
+
+            for (const id in cart) {
+                const item = cart[id];
+                total += item.price * item.qty;
+
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <p>${item.name}</p>
+                        ${item.size ? `<p>Size: ${item.size}</p>` : ""}
+                        <p>Qty: ${item.qty}</p>
+                        <button onclick="removeFromCart(${id})" class="remove-btn">Remove</button>
+                    </div>
+                `;
+            }
+
+            document.getElementById("cart-total").innerText = "£" + total.toFixed(2);
+        });
+}
+
+function removeFromCart(id) {
+    fetch("/cart/remove", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({id: id})
+    })
+    .then(() => updateCartSidebar());
+}
+
+function openCart() {
+    document.getElementById("cart-sidebar").classList.add("open");
+}
+
+function closeCart() {
+    document.getElementById("cart-sidebar").classList.remove("open");
+}
+
+function showToast() {
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+// MODAL JS (correct location)
+function openBlock(title, time) {
+    document.getElementById("modalTitle").innerText = title;
+    document.getElementById("modalTime").innerText = time;
+    document.getElementById("blockModal").style.display = "flex";
+}
+
+function closeBlock() {
+    document.getElementById("blockModal").style.display = "none";
+}
+</script>
+
+<footer class="site-footer">
+
+    <div class="footer-left">
+        <img src="{{ url_for('static', filename='images/spitzfm_logo.png') }}" class="footer-logo">
+        <img src="{{ url_for('static', filename='images/ok_logo.png') }}" class="footer-logo">
+
+        <p>
+            Spitzfm or Spitzfm Radio will be licensed with PRS/PPL to stream music online and on DAB+ coming soon.
+            <br><br>
+            Spitzfm or Spitzfm Radio is powered by Ok Industries Ltd, supporting the NCGM Charity 2023-2027.
+        </p>
+    </div>
+
+    <div class="footer-right">
+        <h3>Get In Touch</h3>
+        <p>Show Works Ltd<br>
+        The Vinyl Side of Life<br>
+        Expenses Road,<br>
+        Markshir,<br>
+        ML5 7QY</p>
+
+        <p>Email: spitzfmradio@gmail.com<br>
+        Call: 020 7175 777</p>
+
+        <ul class="footer-links">
+            <li><a href="/">Listen Live</a></li>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/advertising">Advertising</a></li>
+            <li><a href="https://www.spitzfm.co.uk" target="_blank">Spitzfm</a></li>
+            <li><a href="https://www.okindustries.com" target="_blank">Ok Industries Ltd</a></li>
+        </ul>
+    </div>
+
+</footer>
+
+</body>
+</html>

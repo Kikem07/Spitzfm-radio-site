@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="shop-title">Shop</h1>
+
+<div class="sort-bar">
+    <select id="sort" onchange="sortProducts()">
+        <option value="low">Sort by price: low to high</option>
+        <option value="high">Sort by price: high to low</option>
+        <option value="popularity">Sort by popularity</option>
+    </select>
+</div>
+
+<div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+        <a href="{{ url_for('product_detail', product_id=product.id) }}">
+            <img src="{{ url_for('static', filename='shop/' + product.image) }}" alt="{{ product.name }}">
+        </a>
+        <h3>{{ product.name }}</h3>
+        <p class="price">£{{ "%.2f"|format(product.price) }}</p>
+        <button onclick="addToCart({{ product.id }})">Add to Basket</button>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

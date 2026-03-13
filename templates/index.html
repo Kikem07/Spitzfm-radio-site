@@ -492,16 +492,25 @@
 <nav class="neon-nav">
   <ul>
     <li><a href="/">Home</a></li>
-    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="/schedule">Schedule</a></li>
     <li><a href="/shop">Shop</a></li>
-    <li><a href="/contact">Contact</a></li>
+    <li><a href="/rota">Rota</a></li>
+    <li><a href="/advertising">Advertising</a></li>
+    <li><a href="/about">About</a></li>
   </ul>
 
   <button class="nav-toggle" onclick="toggleNav()">☰</button>
 
-  <!-- ⭐ ADD DARK MODE BUTTON ⭐ -->
-  <button onclick="toggleDarkMode()" class="darkmode-btn">☀ / 🌙</button>
+
 </nav>
+
+<header>
+  <h1 class="neon-logo">SPITZFM</h1>
+  <p class="tagline">{{ tagline }}</p>
+
+  <!-- ⭐ Move dark mode button here ⭐ -->
+  <button onclick="toggleDarkMode()" class="darkmode-btn">☀ / 🌙</button>
+</header>
 
 
 <!-- ⭐ HERO POLISH ⭐ -->
@@ -656,6 +665,10 @@ function toggleDarkMode() {
   document.body.classList.toggle("light-mode");
 }
 
+}
+
+function toggleDarkMode() {
+  document.body.classList.toggle("light-mode");
 }
 
 </script>

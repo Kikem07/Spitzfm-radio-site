@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="product-page">
+    <div class="product-image">
+        <img src="{{ url_for('static', filename='shop/' + product.image) }}" alt="{{ product.name }}">
+    </div>
+
+    <div class="product-info">
+        <h1>{{ product.name }}</h1>
+        <p class="price">£{{ "%.2f"|format(product.price) }}</p>
+        <p class="description">{{ product.description }}</p>
+
+        {% if product.sizes %}
+        <label for="size">Select Size:</label>
+        <select id="size" name="size">
+            {% for size in product.sizes %}
+            <option value="{{ size }}">{{ size }}</option>
+            {% endfor %}
+        </select>
+        {% endif %}
+
+        <button class="add-to-cart" onclick="addToCart({{ product.id }})">
+            Add to Basket
+        </button>
+    </div>
+</div>
+
+{% endblock %}
