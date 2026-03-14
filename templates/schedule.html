@@ -1,89 +1,81 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- HERO SECTION -->
-<div class="schedule-hero">
-    <div class="schedule-overlay">
-        <h1>DAILY SCHEDULE</h1>
-        <p>Running on the 4 Igbo Market Days — starting 5am</p>
+<div class="schedule-bg">
+
+    <!-- HERO SECTION -->
+    <div class="schedule-hero">
+        <div class="schedule-overlay">
+            <h1>DAILY SCHEDULE</h1>
+            <p>Running on the 4 Igbo Market Days — starting 5am</p>
+        </div>
     </div>
+
+    <section class="schedule-section">
+
+        <h2>Market Day Themes</h2>
+
+        <table class="theme-table">
+            <tr>
+                <th>Market Day</th>
+                <th>Theme</th>
+            </tr>
+            <tr><td>Orie</td><td>Leadership, personal growth, careers</td></tr>
+            <tr><td>Afor</td><td>Family, relationships, community</td></tr>
+            <tr><td>Eke</td><td>History, culture, heritage</td></tr>
+            <tr><td>Nkwo</td><td>Business, tech, money</td></tr>
+        </table>
+
+        <h2>Monday–Saturday Schedule (Auto + Live/DJ)</h2>
+
+        <table class="schedule-table">
+            <tr>
+                <th>Time</th>
+                <th>Block</th>
+                <th>Content Highlight</th>
+                <th>Mode</th>
+            </tr>
+
+            <tr><td>05:00–05:30</td><td>Opening Prayer & Word</td><td>Scripture + reflection</td><td>Auto</td></tr>
+            <tr><td>05:30–06:30</td><td>News & Investment</td><td>News, business, commentary</td><td>Auto / Live</td></tr>
+            <tr><td>06:30–07:00</td><td>Adverts & Community Bulletin</td><td>Promos, announcements</td><td>Auto</td></tr>
+            <tr><td>07:00–09:00</td><td>Hour of Fire & Worship</td><td>Prayer + worship</td><td>Auto / Live</td></tr>
+            <tr><td>09:00–17:59</td><td>Focus Instrumentals | Workday Instrumentals | Build‑Up Instrumentals</td><td>Deep‑focus instrumentals</td><td>Auto</td></tr>
+            <tr><td>18:00–19:00</td><td>Commercial & Partner Hour</td><td>Sponsors, promos</td><td>Auto</td></tr>
+            <tr><td>19:00–20:00</td><td>DJ Throwback & Stories</td><td>DJ mix + stories</td><td>Live/DJ</td></tr>
+            <tr><td>20:00–21:00</td><td>Digital Voices / Podcasts</td><td>Curated podcasts</td><td>Auto</td></tr>
+            <tr><td>21:00–22:00</td><td>Sponsored Show / Panel</td><td>Panel or interview</td><td>Live/DJ</td></tr>
+            <tr><td>22:00–23:00</td><td>Round‑Up & Night Blessing</td><td>Daily recap</td><td>Auto</td></tr>
+        </table>
+
+        <h2>Sunday Schedule (Eke)</h2>
+
+        <table class="schedule-table">
+            <tr>
+                <th>Time</th>
+                <th>Block</th>
+                <th>Content</th>
+                <th>Mode</th>
+            </tr>
+
+            <tr><td>05:00–05:30</td><td>Opening Prayer</td><td>Scripture + reflection</td><td>Auto</td></tr>
+            <tr><td>05:30–06:30</td><td>Faith & World News</td><td>Faith‑focused news</td><td>Auto</td></tr>
+            <tr><td>06:30–07:00</td><td>Church Announcements</td><td>Church times, missions</td><td>Auto</td></tr>
+            <tr><td>07:00–09:00</td><td>Sunday Fire & Worship</td><td>Worship + intercession</td><td>Auto</td></tr>
+            <tr><td>09:00–11:00</td><td>Teaching Service 1</td><td>Sermon or service</td><td>Auto</td></tr>
+            <tr><td>11:00–18:59</td><td>Bible Study Hour</td><td>Bible teaching</td><td>Auto</td></tr>
+            <tr><td>12:00–13:00</td><td>Throwback Gospel Classics</td><td>Classic gospel</td><td>Auto</td></tr>
+            <tr><td>13:00–15:00</td><td>Testimonies & Life Stories</td><td>Testimony interviews</td><td>Auto</td></tr>
+            <tr><td>15:00–16:00</td><td>Youth & Next Gen Hour</td><td>Youth worship</td><td>Auto</td></tr>
+            <tr><td>16:00–17:59</td><td>Prayer Clinic</td><td>Long prayers + worship</td><td>Auto</td></tr>
+            <tr><td>19:00–20:00</td><td>Hour of Power with Brother Solomon</td><td>Praise mix</td><td>Live/DJ</td></tr>
+            <tr><td>20:00–21:00</td><td>Faith & Culture</td><td>Faith + culture talk</td><td>Auto</td></tr>
+            <tr><td>21:00–22:00</td><td>Night Reflections</td><td>Quiet worship + letters</td><td>Auto</td></tr>
+            <tr><td>22:00–23:00</td><td>Benediction</td><td>Weekly blessing</td><td>Auto</td></tr>
+        </table>
+
+    </section>
+
 </div>
-
-<section class="schedule-section">
-
-    <h2>Market Day Themes</h2>
-
-    <table class="theme-table">
-        <tr>
-            <th>Market Day</th>
-            <th>Theme</th>
-        </tr>
-        <tr>
-            <td>Orie</td>
-            <td>Leadership, personal growth, careers</td>
-        </tr>
-        <tr>
-            <td>Afor</td>
-            <td>Family, relationships, community</td>
-        </tr>
-        <tr>
-            <td>Eke</td>
-            <td>History, culture, heritage</td>
-        </tr>
-        <tr>
-            <td>Nkwo</td>
-            <td>Business, tech, money</td>
-        </tr>
-    </table>
-
-    <h2>Monday–Saturday Schedule (Auto + Live/DJ)</h2>
-
-    <table class="schedule-table">
-        <tr>
-            <th>Time</th>
-            <th>Block</th>
-            <th>Content Highlight</th>
-            <th>Mode</th>
-        </tr>
-
-        <tr><td>05:00–05:30</td><td>Opening Prayer & Word</td><td>Scripture + reflection</td><td>Auto</td></tr>
-        <tr><td>05:30–06:30</td><td>News & Investment</td><td>News, business, commentary</td><td>Auto / Live</td></tr>
-        <tr><td>06:30–07:00</td><td>Adverts & Community Bulletin</td><td>Promos, announcements</td><td>Auto</td></tr>
-        <tr><td>07:00–09:00</td><td>Hour of Fire & Worship</td><td>Prayer + worship</td><td>Auto / Live</td></tr>
-        <tr><td>09:00–17:59</td><td>Focus Instrumentals|workday Instrumentals|Build‑Up Instrumentals</td><td>Deep‑focus instrumentals</td><td>Auto</td></tr>
-        <tr><td>18:00–19:00</td><td>Commercial & Partner Hour</td><td>Sponsors, promos</td><td>Auto</td></tr>
-        <tr><td>19:00–20:00</td><td>DJ Throwback & Stories</td><td>DJ mix + stories</td><td>Live/DJ</td></tr>
-        <tr><td>20:00–21:00</td><td>Digital Voices / Podcasts</td><td>Curated podcasts</td><td>Auto</td></tr>
-        <tr><td>21:00–22:00</td><td>Sponsored Show / Panel</td><td>Panel or interview</td><td>Live/DJ</td></tr>
-        <tr><td>22:00–23:00</td><td>Round‑Up & Night Blessing</td><td>Daily recap</td><td>Auto</td></tr>
-    </table>
-
-    <h2>Sunday Schedule (Eke)</h2>
-
-    <table class="schedule-table">
-        <tr>
-            <th>Time</th>
-            <th>Block</th>
-            <th>Content</th>
-            <th>Mode</th>
-        </tr>
-
-        <tr><td>05:00–05:30</td><td>Opening Prayer</td><td>Scripture + reflection</td><td>Auto</td></tr>
-        <tr><td>05:30–06:30</td><td>Faith & World News</td><td>Faith‑focused news</td><td>Auto</td></tr>
-        <tr><td>06:30–07:00</td><td>Church Announcements</td><td>Church times, missions</td><td>Auto</td></tr>
-        <tr><td>07:00–09:00</td><td>Sunday Fire & Worship</td><td>Worship + intercession</td><td>Auto</td></tr>
-        <tr><td>09:00–11:00</td><td>Teaching Service 1</td><td>Sermon or service</td><td>Auto</td></tr>
-        <tr><td>11:00–18:59</td><td>Bible Study Hour</td><td>Bible teaching</td><td>Auto</td></tr>
-        <tr><td>12:00–13:00</td><td>Throwback Gospel Classics</td><td>Classic gospel</td><td>Auto</td></tr>
-        <tr><td>13:00–15:00</td><td>Testimonies & Life Stories</td><td>Testimony interviews</td><td>Auto</td></tr>
-        <tr><td>15:00–16:00</td><td>Youth & Next Gen Hour</td><td>Youth worship</td><td>Auto</td></tr>
-        <tr><td>16:00–17:59</td><td>Prayer Clinic</td><td>Long prayers + worship</td><td>Auto</td></tr>
-        <tr><td>19:00–20:00</td><td>Hour of Power with Brother Solomon</td><td>Praise mix</td><td>Live/DJ</td></tr>
-        <tr><td>20:00–21:00</td><td>Faith & Culture</td><td>Faith + culture talk</td><td>Auto</td></tr>
-        <tr><td>21:00–22:00</td><td>Night Reflections</td><td>Quiet worship + letters</td><td>Auto</td></tr>
-        <tr><td>22:00–23:00</td><td>Benediction</td><td>Weekly blessing</td><td>Auto</td></tr>
-    </table>
-
-</section>
 
 {% endblock %}

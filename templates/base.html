@@ -42,14 +42,16 @@
 
 <script>
 function addToCart(id) {
-    let size = null;
-    const sizeSelect = document.getElementById("size");
-    if (sizeSelect) size = sizeSelect.value;
+    let sizeSelect = document.getElementById("size-" + id);
+    let size = sizeSelect ? sizeSelect.value : null;
+
+    let qtyInput = document.getElementById("qty-" + id);
+    let qty = qtyInput ? parseInt(qtyInput.value) : 1;
 
     fetch("/cart/add", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({id: id, size: size})
+        body: JSON.stringify({id: id, size: size, qty: qty})
     })
     .then(res => res.json())
     .then(() => {
@@ -67,8 +69,8 @@ function updateCartSidebar() {
 
             let total = 0;
 
-            for (const id in cart) {
-                const item = cart[id];
+            for (const key in cart) {
+                const item = cart[key];
                 total += item.price * item.qty;
 
                 container.innerHTML += `
@@ -76,7 +78,7 @@ function updateCartSidebar() {
                         <p>${item.name}</p>
                         ${item.size ? `<p>Size: ${item.size}</p>` : ""}
                         <p>Qty: ${item.qty}</p>
-                        <button onclick="removeFromCart(${id})" class="remove-btn">Remove</button>
+                        <button onclick="removeFromCart('${key}')" class="remove-btn">Remove</button>
                     </div>
                 `;
             }
@@ -85,11 +87,11 @@ function updateCartSidebar() {
         });
 }
 
-function removeFromCart(id) {
+function removeFromCart(key) {
     fetch("/cart/remove", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({id: id})
+        body: JSON.stringify({id: key})
     })
     .then(() => updateCartSidebar());
 }
@@ -107,50 +109,43 @@ function showToast() {
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), 2000);
 }
-
-// MODAL JS (correct location)
-function openBlock(title, time) {
-    document.getElementById("modalTitle").innerText = title;
-    document.getElementById("modalTime").innerText = time;
-    document.getElementById("blockModal").style.display = "flex";
-}
-
-function closeBlock() {
-    document.getElementById("blockModal").style.display = "none";
-}
 </script>
 
 <footer class="site-footer">
 
-    <div class="footer-left">
-        <img src="{{ url_for('static', filename='images/spitzfm_logo.png') }}" class="footer-logo">
-        <img src="{{ url_for('static', filename='images/ok_logo.png') }}" class="footer-logo">
+    <div class="footer-inner">
 
-        <p>
-            Spitzfm or Spitzfm Radio will be licensed with PRS/PPL to stream music online and on DAB+ coming soon.
-            <br><br>
-            Spitzfm or Spitzfm Radio is powered by Ok Industries Ltd, supporting the NCGM Charity 2023-2027.
-        </p>
-    </div>
+        <div class="footer-left">
+            <img src="{{ url_for('static', filename='images/spitzfm_logo.png') }}" class="footer-logo">
+            <img src="{{ url_for('static', filename='images/ok_logo.png') }}" class="footer-logo">
 
-    <div class="footer-right">
-        <h3>Get In Touch</h3>
-        <p>Show Works Ltd<br>
-        The Vinyl Side of Life<br>
-        Expenses Road,<br>
-        Markshir,<br>
-        ML5 7QY</p>
+            <p>
+                Spitzfm or Spitzfm Radio will be licensed with PRS/PPL to stream music online and on DAB+ coming soon.
+                <br><br>
+                Spitzfm or Spitzfm Radio is powered by Ok Industries Ltd, supporting the NCGM Charity 2023-2027.
+            </p>
+        </div>
 
-        <p>Email: spitzfmradio@gmail.com<br>
-        Call: 020 7175 777</p>
+        <div class="footer-right">
+            <h3>Get In Touch</h3>
+            <p>Show Works Ltd<br>
+            The Vinyl Side of Life<br>
+            Expenses Road,<br>
+            Markshir,<br>
+            ML5 7QY</p>
 
-        <ul class="footer-links">
-            <li><a href="/">Listen Live</a></li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/advertising">Advertising</a></li>
-            <li><a href="https://www.spitzfm.co.uk" target="_blank">Spitzfm</a></li>
-            <li><a href="https://www.okindustries.com" target="_blank">Ok Industries Ltd</a></li>
-        </ul>
+            <p>Email: spitzfmradio@gmail.com<br>
+            Call: 020 7175 777</p>
+
+            <ul class="footer-links">
+                <li><a href="/">Listen Live</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/advertising">Advertising</a></li>
+                <li><a href="https://www.spitzfm.co.uk" target="_blank">Spitzfm</a></li>
+                <li><a href="https://www.okindustries.com" target="_blank">Ok Industries Ltd</a></li>
+            </ul>
+        </div>
+
     </div>
 
 </footer>

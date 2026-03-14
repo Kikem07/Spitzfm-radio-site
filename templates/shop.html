@@ -14,11 +14,30 @@
 <div class="product-grid">
     {% for product in products %}
     <div class="product-card">
+
         <a href="{{ url_for('product_detail', product_id=product.id) }}">
             <img src="{{ url_for('static', filename='shop/' + product.image) }}" alt="{{ product.name }}">
         </a>
+
         <h3>{{ product.name }}</h3>
         <p class="price">£{{ "%.2f"|format(product.price) }}</p>
+
+        {# SIZE SELECTOR FOR T‑SHIRTS ONLY #}
+        {% if "T‑Shirt" in product.name %}
+        <select id="size-{{ product.id }}" class="size-select">
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+        </select>
+        {% endif %}
+
+        <div class="qty-wrap">
+    <label for="qty-{{ product.id }}">Qty:</label>
+    <input type="number" id="qty-{{ product.id }}" class="qty-input" value="1" min="1">
+</div>
+
+
         <button onclick="addToCart({{ product.id }})">Add to Basket</button>
     </div>
     {% endfor %}
